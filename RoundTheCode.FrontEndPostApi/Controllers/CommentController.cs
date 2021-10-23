@@ -34,8 +34,15 @@ namespace RoundTheCode.FrontEndPostApi.Controllers
         }
 
         [HttpPost]
-        public virtual Comment Create([FromBody] CreateComment createComment)
+        public virtual ActionResult<Comment> Create(CreateComment createComment)
         {
+            var post = _postService.ReadById(createComment.PostId);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
             return _commentService.Create(createComment);
         }
     }
